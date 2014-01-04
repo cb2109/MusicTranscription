@@ -9,12 +9,18 @@ public class WaveHeader {
     private int chunkSize;
     private String chunkFormat;
 
+    private String subchunkId;
+    private int subchunkSize;
     private int compressionLevel;
     private int noChannels;
     private int sampleRate;
+    private int byteRate;
     private int blockAlign;
     private int bitsPerSample;
+
     private int dataStart;
+    private String dataHeader;
+    private int dataSize;
 
 
     public void setChunkId(String id) {
@@ -29,6 +35,13 @@ public class WaveHeader {
         this.chunkFormat = format;
     }
 
+    public void setSubchunkID(String id) {
+        this.subchunkId = id;
+    }
+    public void setSubchunkSize(int size) {
+        this.subchunkSize = size;
+    }
+
     public void setCompressionLevel(int level) {
         this.compressionLevel = level;
     }
@@ -41,6 +54,10 @@ public class WaveHeader {
         this.sampleRate = sampleRate;
     }
 
+    public void setByteRate(int byteRate) {
+        this.byteRate = byteRate;
+    }
+
     public void setBlockAlign(int blockAlign) {
         this.blockAlign = blockAlign;
     }
@@ -51,6 +68,14 @@ public class WaveHeader {
 
     public void setDataStart(int dataStart) {
         this.dataStart = dataStart;
+    }
+
+    public void setDataHeader(String dataHeader) {
+        this.dataHeader = dataHeader;
+    }
+
+    public void setDataSize(int dataSize) {
+        this.dataSize = dataSize;
     }
 
     public String getChunkId() {
@@ -77,6 +102,10 @@ public class WaveHeader {
         return sampleRate;
     }
 
+    public int getByteRate() {
+        return byteRate;
+    }
+
     public int getBlockAlign() {
         return blockAlign;
     }
@@ -87,5 +116,21 @@ public class WaveHeader {
 
     public int getDataStart() {
         return dataStart;
+    }
+
+    public String getSubchunkId() {
+        return subchunkId;
+    }
+
+    public int getSubchunkSize() {
+        return subchunkSize;
+    }
+
+    public String getDataHeader() {
+        return dataHeader;
+    }
+
+    public int getDataSize() {
+        return dataSize;
     }
 }

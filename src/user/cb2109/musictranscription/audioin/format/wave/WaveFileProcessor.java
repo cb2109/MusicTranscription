@@ -9,6 +9,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +34,9 @@ public class WaveFileProcessor implements AudioFileAbstracter {
 
         ArrayList<WaveFrame> frames = new ArrayList<WaveFrame>();
 
-        int start = header.getDataStart() + 8; // there are two meta data pieces in the way worth 8 bytes
+        int start = header.getDataStart();
         int numChannels = header.getNoChannels();
-        int sampleSize = header.getBitsPerSample();
-        int bytesPerSample = (sampleSize + 7) / 8;  // ceiling division
+        int sampleSize = (header.getBitsPerSample() + 7) / 8;    // ceiling division
 
         int i = start;
         if(numChannels == 2) {
@@ -85,14 +86,20 @@ public class WaveFileProcessor implements AudioFileAbstracter {
         h.setChunkSize(readLittleEndian(d[4], d[5], d[6], d[7]));
         h.setChunkFormat(readStringFromBytes(d[8], d[9], d[10], d[11]));
 
-        // Ignoring the header for the format chunk
         // process the format subchunk
+        h.setSubchunkID(readStringFromBytes(d[12], d[13], d[14], d[15]));
+        h.setSubchunkSize(readLittleEndian(d[16], d[17], d[18], d[19]));
         h.setCompressionLevel(readLittleEndian(d[20], d[21]));
         h.setNumChannels(readLittleEndian(d[22], d[23]));
         h.setSampleRate(readLittleEndian(d[24], d[25], d[26], d[27]));
-        h.setBlockAlign(readLittleEndian(d[28], d[29]));
-        h.setBitsPerSample(readLittleEndian(d[30], d[31]));
-        h.setDataStart(32);
+        h.setByteRate(readLittleEndian(d[28], d[29], d[30], d[31]));
+        h.setBlockAlign(readLittleEndian(d[32], d[33]));
+        h.setBitsPerSample(readLittleEndian(d[34], d[35]));
+
+        h.setDataHeader(readStringFromBytes(d[36], d[37], d[38], d[39]));
+        h.setDataSize(readLittleEndian(d[40], d[41], d[42], d[43]));
+
+        h.setDataStart(44);
 
 
         return h;
@@ -110,12 +117,10 @@ public class WaveFileProcessor implements AudioFileAbstracter {
     }
 
     private int readLittleEndian(byte... bytes) {
-        int shiftCounter = 0;
-        int result = 0;
-        for(int i = bytes.length - 1; i >= 0; i--) {
-            result |= bytes[i] << shiftCounter;
-        }
-        return result;
+
+        ByteBuffer buf = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
+
+        return (bytes.length < 4 ? buf.getShort() : buf.getInt());
     }
 
     private String readStringFromBytes(byte... bytes) {
