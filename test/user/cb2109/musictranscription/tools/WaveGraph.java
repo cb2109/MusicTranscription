@@ -39,7 +39,7 @@ public class WaveGraph {
     }
 
     private static void addDataToSeries(WaveFileAbstraction abstraction, XYSeries dataR, XYSeries dataL) {
-        ArrayList<WaveFrame> frames = abstraction.getFrames();
+        ArrayList<WaveFrame> frames = abstraction.getWaveFrames();
         double i = 0;
         for(WaveFrame f : frames) {
             dataL.add(i, f.getLeft());

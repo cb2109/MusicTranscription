@@ -68,7 +68,7 @@ public class WaveFileReconstructor implements UnabstractorI<WaveFileAbstraction>
 
     private void unabstractWaves(WaveFileAbstraction file, List<Byte> bytesToWrite) throws SoundFileReconstructionException {
         WaveHeader header = file.getHeader();
-        List<WaveFrame> frames = file.getFrames();
+        List<WaveFrame> frames = file.getWaveFrames();
         int noChannels = header.getNoChannels();
         int bps = (header.getBitsPerSample() + 7) / 8;  // ceiling division
         if(noChannels == 1) {

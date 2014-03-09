@@ -1,10 +1,12 @@
 package user.cb2109.musictranscription.audioin.format.wave;
 
+import user.cb2109.musictranscription.audioin.format.Frame;
+
 /**
  * Author: Christopher Bates
  * Date: 01/12/13
  */
-public class WaveFrame {
+public class WaveFrame implements Frame {
     private int sampleSize;
     private int left;
     private int right;
@@ -32,5 +34,9 @@ public class WaveFrame {
 
     public int getRight() {
         return right;
+    }
+
+    public int getSample() {
+        return left + right;
     }
 }

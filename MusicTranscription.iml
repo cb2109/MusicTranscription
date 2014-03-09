@@ -38,6 +38,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="com.kryshchuk.maven.plugins:jfreechart-maven-plugin:1.0" level="project" />
+    <orderEntry type="library" name="org.kie.modules:org-apache-commons-math:6.1.0-SNAPSHOT" level="project" />
   </component>
 </module>
 
